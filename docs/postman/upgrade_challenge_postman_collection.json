@@ -1,0 +1,337 @@
+{
+	"info": {
+		"_postman_id": "6b6f4b89-f837-4308-95cd-581516aaa75c",
+		"name": "Upgrade Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Service",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"firstName\": \"test\",\n\t\"lastName\": \"test\",\n\t\"email\": \"test@test.com\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/users?email=test2@test.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"users"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test2@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/users?email=test2@test.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"users"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test2@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7bb03a87-adea-4761-a6c8-74a4e7518f4a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b7b77cdd-b823-4ec5-bd14-1bcd88874db6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Campsite",
+			"item": [
+				{
+					"name": "Get Campsites",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/campsites/700001a4-7c8a-47d6-a689-fdf772f82f87",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"campsites",
+								"700001a4-7c8a-47d6-a689-fdf772f82f87"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Campsite by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/campsites/700001a4-7c8a-47d6-a689-fdf772f82f87",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"campsites",
+								"700001a4-7c8a-47d6-a689-fdf772f82f87"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reservation Service",
+			"item": [
+				{
+					"name": "Create Reservation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"firstName\": \"test\",\n        \"lastName\": \"test\",\n        \"email\": \"test2@test.com\"\n    },\n    \"arrivalDate\": \"2020-09-26T11:44:44\",\n    \"departureDate\": \"2020-09-29T11:44:44\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/v1/campsites/700001a4-7c8a-47d6-a689-fdf772f82f87/reservations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"v1",
+								"campsites",
+								"700001a4-7c8a-47d6-a689-fdf772f82f87",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Reservation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"arrivalDate\": \"2020-09-29T11:44:44\",\n    \"departureDate\": \"2020-09-30T11:44:44\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/v1/campsites/reservations/LDMCLSD",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"v1",
+								"campsites",
+								"reservations",
+								"LDMCLSD"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Reservation",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/v1/campsites/reservations/AAILZFB",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"v1",
+								"campsites",
+								"reservations",
+								"AAILZFB"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reservations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/v1/campsites/700001a4-7c8a-47d6-a689-fdf772f82f87/reservations?arrivalDate=2020-09-24T00:00:00",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"v1",
+								"campsites",
+								"700001a4-7c8a-47d6-a689-fdf772f82f87",
+								"reservations"
+							],
+							"query": [
+								{
+									"key": "arrivalDate",
+									"value": "2020-09-24T00:00:00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reservation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8081/v1/campsites/reservations/YTINDEX",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"v1",
+								"campsites",
+								"reservations",
+								"YTINDEX"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

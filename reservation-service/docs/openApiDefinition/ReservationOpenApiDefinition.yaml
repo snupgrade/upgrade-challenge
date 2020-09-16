@@ -1,0 +1,242 @@
+openapi: "3.0.0"
+info:
+  description: "This is the API for the upgrade reservation service."
+  version: "1.0.0"
+  title: "Upgrade Reservation Rest API"
+  contact:
+    email: "serge.nassar@gmail.com"
+tags:
+  - name: "Reservation"
+    description: "Reservation operations"
+paths:
+  /v1/campsites/{campsiteId}/reservations:
+    get:
+      tags:
+        - "Reservation"
+      summary: "Get the reservation dates."
+      description: "Get the reservation dates available for a certain range (Default 1 month)."
+      operationId: "getCampsiteReservations"
+      parameters:
+        - name: "campsiteId"
+          in: "path"
+          description: "UUID of the campsite."
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "arrivalDate"
+          in: "query"
+          description: "Date range start."
+          required: false
+          schema:
+            type: "string"
+            format: "date-time"
+        - name: "departureDate"
+          in: "query"
+          description: "Date range end."
+          required: false
+          schema:
+            type: "string"
+            format: "date-time"
+      responses:
+        "200":
+          description: "A list of available dates."
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "string"
+                  format: "date-time"
+        "400":
+          description: "Invalid input data."
+        "404":
+          description: "Campsite not found."
+        "503":
+          description: "Internal error retrieving campsite reservations."
+    post:
+      tags:
+        - "Reservation"
+      summary: "Create a reservation."
+      description: "Create a reservation for a campsite."
+      operationId: "addReservation"
+      requestBody:
+        $ref: "#/components/requestBodies/AddReservationBody"
+      responses:
+        "200":
+          description: "Reservation created."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reservation"
+        "400":
+          description: "Invalid input data."
+        "404":
+          description: "Campsite or user not found."
+        "409":
+          description: "Reservation dates already taken."
+        "503":
+          description: "Internal error creating reservation."
+  /v1/campsites/reservations/{base36Id}:
+    get:
+      tags:
+        - "Reservation"
+      summary: "Get the reservation."
+      description: "Get the reservation from the base 36 id."
+      operationId: "getCampsiteReservation"
+      parameters:
+        - name: "base36Id"
+          in: "path"
+          description: "User readable id for his reservation."
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "Reservation found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reservation"
+        "400":
+          description: "Invalid input data."
+        "404":
+          description: "Reservation not found."
+        "503":
+          description: "Internal error finding reservation."
+    put:
+      tags:
+        - "Reservation"
+      summary: "Update the reservation"
+      description: "Update the reservation arrival and departure dates."
+      operationId: "updateCampsiteReservation"
+      parameters:
+        - name: "base36Id"
+          in: "path"
+          description: "User readable id for his reservation"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateReservationBody"
+      responses:
+        "200":
+          description: "Reservation updated."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reservation"
+        "400":
+          description: "Invalid input data."
+        "404":
+          description: "Reservation not found."
+        "503":
+          description: "Internal error updating reservation."
+    delete:
+      tags:
+        - "Reservation"
+      summary: "Delete the reservation."
+      description: "Cancels the reservation and frees up the time slot."
+      operationId: "deleteCampsiteReservation"
+      parameters:
+        - name: "base36Id"
+          in: "path"
+          description: "User readable id for his reservation"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "Reservation deleted."
+        "400":
+          description: "Invalid input data."
+        "404":
+          description: "Reservation not found."
+        "503":
+          description: "Internal error deleting reservation."
+components:
+  requestBodies:
+    AddReservationBody:
+      description: A JSON object containing reservation creation information
+      required: true
+      content:
+        application/json:
+          schema:
+            type: "object"
+            required:
+              - firstName
+              - lastName
+              - email
+              - arrivalDate
+              - departureDate
+            properties:
+              user:
+                $ref: "#/components/requestBodies/UserBody"
+              arrivalDate:
+                type: "string"
+                format: "date-time"
+              departureDate:
+                type: "string"
+                format: "date-time"
+    UpdateReservationBody:
+      description: A JSON object containing reservation update information
+      required: true
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              arrivalDate:
+                type: "string"
+                format: "date-time"
+              departureDate:
+                type: "string"
+                format: "date-time"
+    UserBody:
+      description: A JSON object containing user information
+      required: true
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              firstName:
+                type: "string"
+              lastName:
+                type: "string"
+              email:
+                type: "string"
+                format: "email"
+  schemas:
+    User:
+      type: "object"
+      properties:
+        userId:
+          type: "string"
+          format: "uuid"
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        email:
+          type: "string"
+          format: "email"
+    Reservation:
+      type: "object"
+      properties:
+        reservationId:
+          type: "string"
+          format: "uuid"
+        user:
+          type: "string"
+        base36Id:
+          type: "string"
+        arrivalDate:
+          type: "string"
+          format: "date-time"
+        departureDate:
+          type: "string"
+          format: "date-time"

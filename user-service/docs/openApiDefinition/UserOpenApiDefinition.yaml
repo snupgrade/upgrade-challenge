@@ -1,0 +1,130 @@
+openapi: "3.0.0"
+info:
+  description: "This is the API for the upgrade user service."
+  version: "1.0.0"
+  title: "Upgrade User Rest API"
+  contact:
+    email: "serge.nassar@gmail.com"
+tags:
+  - name: "User"
+    description: "User operations"
+paths:
+  /v1/users:
+    get:
+      tags:
+        - "User"
+      summary: "Get users."
+      description: "Get a list of users according to a criteria."
+      operationId: "getUsers"
+      parameters:
+        - name: "email"
+          in: "query"
+          description: "Email of the user."
+          required: true
+          schema:
+            type: "string"
+            format: "email"
+      responses:
+        "200":
+          description: "Users found."
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/User"
+        "400":
+          description: "Invalid input data."
+        "404":
+          description: "No users found."
+        "503":
+          description: "Internal error get user list."
+    post:
+      tags:
+        - "User"
+      summary: "Create a user."
+      description: "Create a user and returns it."
+      operationId: "addUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/AddUserBody"
+      responses:
+        "200":
+          description: "User created."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: "Invalid input data."
+        "409":
+          description: "Conflic with existing user."
+        "503":
+          description: "Internal error creating user."
+
+  /v1/users/{userId}:
+    get:
+      tags:
+        - "User"
+      summary: "Get the user from the id."
+      description: "Returns a user matching the id."
+      operationId: "getUser"
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "User id."
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "User found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: "Invalid input data."
+        "404":
+          description: "User not found."
+        "503":
+          description: "Internal error finding user."
+
+components:
+  requestBodies:
+    AddUserBody:
+      description: A JSON object containing the user information
+      required: true
+      content:
+        application/json:
+          schema:
+            type: "object"
+            required:
+              - firstName
+              - lastName
+              - email
+            properties:
+              firstName:
+                type: "string"
+              lastName:
+                type: "string"
+              email:
+                type: "string"
+                format: "email"
+  schemas:
+    User:
+      type: "object"
+      properties:
+        userId:
+          type: "string"
+          format: "uuid"
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        email:
+          type: "string"
+          format: "email"
